@@ -1,16 +1,21 @@
 name: "Emily's website!"
 output_dir: "."
 navbar:
-  title: "Home"
+  title: "Emily Murphy"
   right:
-    - text: "About"
-      href: about.html
-    - text: "Projects"
-      href: projects.html
+    - text: "Experience"
+      href: experience.html
+    - text: "Plots"
+      href: plots.html
+    - icon: fa-linkedin fa-lg
+      href: https://www.linkedin.com/in/emilyrmurphy/
     - icon: fa-envelope fa-lg
       href: mailto:<emily.murphy@columbia.edu>
     - icon: fa-github fa-lg
       href: http://github.com/er-murphy/
+    
 output:
   html_document:
-    theme: cerulean
+    theme: cosmo
+    
+# add LinkedIn link!!!!

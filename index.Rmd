@@ -1,51 +1,16 @@
 ---
-title: "My awesome website"
+title: "Hi, I'm Emily."
 output: 
   html_document:
     toc: true
     toc_float: true
 ---
 
-"index.Rmd" has to be named this and be in the website directory. This is the page that's loaded first.
+I'm a second-year MPH student at the Mailman School of Public Health. I'm in the Department of Epidemiology with a certificate in Infectious Disease Epidemiology, and am especially interested in zoonoses and highly-fatal emerging pathogens.
 
+On this site, you can find details on my academic and professional [experience](experience.html), as well as links to my [email](mailto:<emily.murphy@columbia.edu>), [Github](http://github.com/er-murphy/), and [LinkedIn](https://www.linkedin.com/in/emilyrmurphy/). 
 
-# This is Emily's awesome website
+Finally, swing by the [plots](plots.html) page to see an example of the data science skills I've learnt at Mailman. 
 
-Here's a gif of Elmo
-![](https://media.giphy.com/media/drXGoW1iudhKw/giphy.gif)
-This is the R markdown approach to generating images that are saved elsewhere online.
-
-You can add text
-
-* and lists
-* with extra bullets
-
-You can *italicize* and **bold**
-
-This is a [link](https://www.google.com/) to a good data science tool. 
-
-Here's a link to the [about](about.html) page.
-
-You can also still use R!
-```{r}
-library(tidyverse)
-
-plot_df = 
-  tibble(
-    x = runif(100),
-    y = 1 + 2 * x + rnorm(100)
-  )
-
-plot_df |> 
-  ggplot(aes(x = x, y = y)) +
-  geom_point()
-```
-
-This is Alexandria, my hometown:
-
-![](Images/alexandria.jpeg)
-
-<img src="Images/alexandria.jpeg" style="width:75%">
-
-
+<img src="Images/haven_plaza.jpeg" style="width:100%">
 

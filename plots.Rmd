@@ -29,7 +29,8 @@ weather =
       USS0023B17S = "Waterhole_WA"),
     tmin = tmin / 10,
     tmax = tmax / 10, 
-    snwd = round((snwd/25.4), digits = 2)
+    snwd = round((snwd/25.4), digits = 2),
+    prcp = round((prcp/25.4))
   )
 
 ```
@@ -56,7 +57,7 @@ weather |>
   ) |>
   layout(
     xaxis = list(title = "Date"), 
-    yaxis = list(title = "Snow Depth (in)"), 
+    yaxis = list(title = "Snow Depth (in.)"), 
     legend  = list(title = list(text = "Location"))
   )
 ```
@@ -64,60 +65,40 @@ weather |>
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Total Precipitation by Month, 2021 - 2022
-
-Fix months so that they're in order of date rather than alphabetical
+### Total Precipitation by Month, 2022
 
 ```{r}
 weather |> 
   separate(date, into = c("year", "month", "day"), sep = "-") |> 
   mutate(
-    month = as.factor(case_match(month,
-                                 "01" ~ "Jan",
-                                 "02" ~ "Feb",
-                                 "03" ~ "Mar",
-                                 "04" ~ "Apr",
-                                 "05" ~ "May",
-                                 "06" ~ "Jun",
-                                 "07" ~ "Jul",
-                                 "08" ~ "Aug",
-                                 "09" ~ "Sep",
-                                 "10" ~ "Oct",
-                                 "11" ~ "Nov",
-                                 "12" ~ "Dec")),
-    month = factor(month, levels = )
-  )
-  
-  
-  
-  
+    month = case_match(month,
+                     "01" ~ "Jan",
+                     "02" ~ "Feb",
+                     "03" ~ "Mar",
+                     "04" ~ "Apr",
+                     "05" ~ "May",
+                     "06" ~ "Jun",
+                     "07" ~ "Jul",
+                     "08" ~ "Aug",
+                     "09" ~ "Sep",
+                     "10" ~ "Oct",
+                     "11" ~ "Nov",
+                     "12" ~ "Dec"),
+    month = factor(month, 
+                       levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), 
+                       ordered = TRUE)
+  ) |> 
+  filter(year == "2022") |> 
   group_by(name, month) |> 
   summarize(total_precip = sum(prcp)) |> 
   plot_ly(
-    x = ~month, y = ~total_precip, color = ~name, type = "bar", colors = "viridis")
-  
-
+    x = ~month, y = ~total_precip, color = ~name, type = "bar", colors = "viridis") |> 
+  layout(
+    xaxis = list(title = "Month of 2021"), 
+    yaxis = list(title = "Total Precipitation (Tenths of in.)"), 
+    legend  = list(title = list(text = "Location"))    
+  )
 ```
-
-  mutate(
-    response = factor(response, 
-                      levels = c("Poor", "Fair", "Good", "Very Good", "Excellent"),
-
-  mutate(
-    month = case_match(month,
-      "01" ~ "Jan",
-      "02" ~ "Feb",
-      "03" ~ "Mar",
-      "04" ~ "Apr",
-      "05" ~ "May",
-      "06" ~ "Jun",
-      "07" ~ "Jul",
-      "08" ~ "Aug",
-      "09" ~ "Sep",
-      "10" ~ "Oct",
-      "11" ~ "Nov",
-      "12" ~ "Dec")
-  ) |> 
 
 
 ### Chart C
@@ -125,6 +106,10 @@ weather |>
 Scatterplot of min (x) and max (y) temp correlation?
 
 ```{r}
-
+nyc_airbnb |>
+  mutate(text_label = str_c("Price: $", price, "\nRating: ", rating)) |> 
+  plot_ly(
+    x = ~lat, y = ~long, type = "scatter", mode = "markers",
+    color = ~price, text = ~text_label, alpha = 0.5)
 ```
 

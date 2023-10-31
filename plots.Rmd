@@ -1,7 +1,130 @@
 ---
 title: "Data Science in Action"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
 ---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(plotly)
+
+library(tidyverse)
+library(p8105.datasets)
+```
+
+```{r}
+weather = 
+  rnoaa::meteo_pull_monitors(
+    c("USW00094728", "USW00022534", "USS0023B17S"),
+    var = c("PRCP", "TMIN", "TMAX", "SNOW", "SNWD"), 
+    date_min = "2021-01-01",
+    date_max = "2022-12-31") |> 
+  mutate(
+    name = recode(
+      id, 
+      USW00094728 = "CentralPark_NY", 
+      USW00022534 = "Molokai_HI",
+      USS0023B17S = "Waterhole_WA"),
+    tmin = tmin / 10,
+    tmax = tmax / 10, 
+    snwd = round((snwd/25.4), digits = 2)
+  )
+
+```
+
+!!!!!! Need to separate out date variable and add a month variable !!!
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Snow Depth in Waterhole vs. Central Park, 2021 - 2022
+
+!!! Would be cool to have this color filled in - google how to do that!!!
+
+```{r}
+weather |> 
+  filter(name != "Molokai_HI") |> 
+  mutate(
+    text_label = str_c("Snow Depth (in): ", snwd, "\nDate: ", date)
+  ) |> 
+  plot_ly(
+    x = ~date, y = ~snwd, type = "scatter", mode = "line", 
+    color = ~name, colors = "viridis", text = ~text_label, alpha = 0.5
+  ) |>
+  layout(
+    xaxis = list(title = "Date"), 
+    yaxis = list(title = "Snow Depth (in)"), 
+    legend  = list(title = list(text = "Location"))
+  )
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Total Precipitation by Month, 2021 - 2022
+
+Fix months so that they're in order of date rather than alphabetical
+
+```{r}
+weather |> 
+  separate(date, into = c("year", "month", "day"), sep = "-") |> 
+  mutate(
+    month = as.factor(case_match(month,
+                                 "01" ~ "Jan",
+                                 "02" ~ "Feb",
+                                 "03" ~ "Mar",
+                                 "04" ~ "Apr",
+                                 "05" ~ "May",
+                                 "06" ~ "Jun",
+                                 "07" ~ "Jul",
+                                 "08" ~ "Aug",
+                                 "09" ~ "Sep",
+                                 "10" ~ "Oct",
+                                 "11" ~ "Nov",
+                                 "12" ~ "Dec")),
+    month = factor(month, levels = )
+  )
+  
+  
+  
+  
+  group_by(name, month) |> 
+  summarize(total_precip = sum(prcp)) |> 
+  plot_ly(
+    x = ~month, y = ~total_precip, color = ~name, type = "bar", colors = "viridis")
+  
+
+```
+
+  mutate(
+    response = factor(response, 
+                      levels = c("Poor", "Fair", "Good", "Very Good", "Excellent"),
+
+  mutate(
+    month = case_match(month,
+      "01" ~ "Jan",
+      "02" ~ "Feb",
+      "03" ~ "Mar",
+      "04" ~ "Apr",
+      "05" ~ "May",
+      "06" ~ "Jun",
+      "07" ~ "Jul",
+      "08" ~ "Aug",
+      "09" ~ "Sep",
+      "10" ~ "Oct",
+      "11" ~ "Nov",
+      "12" ~ "Dec")
+  ) |> 
+
+
+### Chart C
+
+Scatterplot of min (x) and max (y) temp correlation?
+
+```{r}
+
+```
+

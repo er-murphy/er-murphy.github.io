@@ -27,38 +27,29 @@ weather =
       USW00094728 = "CentralPark_NY", 
       USW00022534 = "Molokai_HI",
       USS0023B17S = "Waterhole_WA"),
-    tmin = tmin / 10,
-    tmax = tmax / 10, 
-    snwd = round((snwd/25.4), digits = 2),
-    prcp = round((prcp/25.4))
+    tmin = tmin/10,
+    tmax = tmax/10
   )
 
 ```
 
-!!!!!! Need to separate out date variable and add a month variable !!!
-
-
 Column {data-width=650}
 -----------------------------------------------------------------------
 
-### Snow Depth in Waterhole vs. Central Park, 2021 - 2022
-
-!!! Would be cool to have this color filled in - google how to do that!!!
+### Snow Depth in Waterhole, 2021 - 2022
 
 ```{r}
 weather |> 
-  filter(name != "Molokai_HI") |> 
+  filter(name == "Waterhole_WA") |> 
   mutate(
-    text_label = str_c("Snow Depth (in): ", snwd, "\nDate: ", date)
+    text_label = str_c("Depth: ", snwd, " inches")
   ) |> 
   plot_ly(
     x = ~date, y = ~snwd, type = "scatter", mode = "line", 
-    color = ~name, colors = "viridis", text = ~text_label, alpha = 0.5
-  ) |>
+    color = ~name, colors = "viridis", text = ~text_label, fill = "tozeroy") |>
   layout(
     xaxis = list(title = "Date"), 
-    yaxis = list(title = "Snow Depth (in.)"), 
-    legend  = list(title = list(text = "Location"))
+    yaxis = list(title = "Snow Depth (in.)")
   )
 ```
 
@@ -95,21 +86,27 @@ weather |>
     x = ~month, y = ~total_precip, color = ~name, type = "bar", colors = "viridis") |> 
   layout(
     xaxis = list(title = "Month of 2021"), 
-    yaxis = list(title = "Total Precipitation (Tenths of in.)"), 
+    yaxis = list(title = "Total Precipitation (tenths of in.)"), 
     legend  = list(title = list(text = "Location"))    
   )
 ```
 
 
-### Chart C
-
-Scatterplot of min (x) and max (y) temp correlation?
+### Correlation of Temperature Range and Precipitation
 
 ```{r}
-nyc_airbnb |>
-  mutate(text_label = str_c("Price: $", price, "\nRating: ", rating)) |> 
+weather |> 
+  mutate(
+    trange = tmax - tmin,
+    text_label = str_c("Size of temperature range: ", trange, " degrees C")
+  ) |> 
+  filter(prcp > 0 & prcp < 1500 & trange < 20) |> 
   plot_ly(
-    x = ~lat, y = ~long, type = "scatter", mode = "markers",
-    color = ~price, text = ~text_label, alpha = 0.5)
-```
+    x = ~trange, y = ~prcp, type = "scatter", mode = "markers", 
+    color = ~name, colors = "viridis", text = ~text_label, alpha = 0.75) |>
+  layout(
+    xaxis = list(title = "Size of Temperature Range (degrees C)"), 
+    yaxis = list(title = "Precipitation (tenths of in.)")
+  )
 
+```

@@ -1,16 +1,18 @@
 ---
-title: "Hi, I'm Emily."
+title: ""
 output: 
   html_document:
     toc: true
     toc_float: true
 ---
 
+# Hi, I'm Emily
+
 I'm a second-year MPH student at the Mailman School of Public Health. I'm in the Department of Epidemiology with a certificate in Infectious Disease Epidemiology, and am especially interested in zoonoses and highly-fatal emerging pathogens.
 
-On this site, you can find details on my academic and professional [experience](experience.html), as well as links to my [email](mailto:<emily.murphy@columbia.edu>), [Github](http://github.com/er-murphy/), and [LinkedIn](https://www.linkedin.com/in/emilyrmurphy/). 
+On this site, you can find details on my academic and professional [experience](experience.html), as well as links to my [email](mailto:<emily.murphy@columbia.edu>), [Github](http://github.com/er-murphy/), and [LinkedIn](https://www.linkedin.com/in/emilyrmurphy/).
 
-Finally, swing by the [plots](plots.html) page to see an example of the data science skills I've learnt at Mailman. 
+If you're in need of a dinner recommendation, see the [restaurants](restaurants.html) page for some ideas. Finally, swing by the [plots](plots.html) page to see an example of the data science skills I've learnt at Mailman.
 
 <img src="Images/haven_plaza.jpeg" style="width:100%">
 

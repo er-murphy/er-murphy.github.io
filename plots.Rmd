@@ -36,31 +36,14 @@ weather =
 Column {data-width=650}
 -----------------------------------------------------------------------
 
-### Snow Depth in Waterhole, 2021 - 2022
-
-```{r}
-weather |> 
-  filter(name == "Waterhole_WA") |> 
-  mutate(
-    text_label = str_c("Depth: ", snwd, " inches")
-  ) |> 
-  plot_ly(
-    x = ~date, y = ~snwd, type = "scatter", mode = "line", 
-    color = ~name, colors = "viridis", text = ~text_label, fill = "tozeroy") |>
-  layout(
-    xaxis = list(title = "Date"), 
-    yaxis = list(title = "Snow Depth (in.)")
-  )
-```
-
-Column {data-width=350}
------------------------------------------------------------------------
-
-### Total Precipitation by Month, 2022
+### Total Monthly Precipitation, 2022
 
 ```{r}
 weather |> 
   separate(date, into = c("year", "month", "day"), sep = "-") |> 
+  filter(year == "2022") |> 
+  group_by(name, month) |> 
+  summarize(total_precip = sum(prcp)) |> 
   mutate(
     month = case_match(month,
                      "01" ~ "Jan",
@@ -77,22 +60,41 @@ weather |>
                      "12" ~ "Dec"),
     month = factor(month, 
                        levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), 
-                       ordered = TRUE)
+                       ordered = TRUE),
+    text_label = str_c("Total Precipitation: ", (total_precip), " tenths of an inch")
   ) |> 
-  filter(year == "2022") |> 
-  group_by(name, month) |> 
-  summarize(total_precip = sum(prcp)) |> 
   plot_ly(
-    x = ~month, y = ~total_precip, color = ~name, type = "bar", colors = "viridis") |> 
+    x = ~month, y = ~total_precip, color = ~name, type = "bar", colors = "viridis", text = ~text_label) |> 
   layout(
     xaxis = list(title = "Month of 2021"), 
     yaxis = list(title = "Total Precipitation (tenths of in.)"), 
     legend  = list(title = list(text = "Location"))    
   )
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Snow Depth in Waterhole WA, 2021 - 2022
+
+```{r}
+weather |> 
+  filter(name == "Waterhole_WA") |> 
+  mutate(
+    text_label = str_c("Depth: ", snwd, " inches")
+  ) |> 
+  plot_ly(
+    x = ~date, y = ~snwd, type = "scatter", mode = "line", 
+    color = ~name, colors = "viridis", text = ~text_label, fill = "tozeroy") |>
+  layout(
+    xaxis = list(title = "Date"), 
+    yaxis = list(title = "Snow Depth (in.)")
+  )
 ```
 
 
-### Correlation of Temperature Range and Precipitation
+### Daily Precipitation vs. Size of Temperature Range
 
 ```{r}
 weather |> 
@@ -103,10 +105,11 @@ weather |>
   filter(prcp > 0 & prcp < 1500 & trange < 20) |> 
   plot_ly(
     x = ~trange, y = ~prcp, type = "scatter", mode = "markers", 
-    color = ~name, colors = "viridis", text = ~text_label, alpha = 0.75) |>
+    color = ~name, colors = "viridis", text = ~text_label, alpha = 0.5) |>
   layout(
     xaxis = list(title = "Size of Temperature Range (degrees C)"), 
-    yaxis = list(title = "Precipitation (tenths of in.)")
+    yaxis = list(title = "Precipitation (tenths of in.)"), 
+    legend  = list(title = list(text = "Location"))
   )
 
 ```

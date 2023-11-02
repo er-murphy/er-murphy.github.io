@@ -5,6 +5,8 @@ navbar:
   right:
     - text: "Experience"
       href: experience.html
+    - text: "Restaurant Recs"
+      href: restaurants.html    
     - text: "Plots"
       href: plots.html
     - icon: fa-linkedin fa-lg
@@ -17,5 +19,3 @@ navbar:
 output:
   html_document:
     theme: cosmo
-    
-# add LinkedIn link!!!!
